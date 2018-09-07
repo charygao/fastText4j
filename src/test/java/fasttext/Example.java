@@ -1,13 +1,19 @@
 package fasttext;
 
+import fasttext.util.FileUtil;
+import org.junit.Test;
+
 import java.io.IOException;
 
 public class Example {
+    String path = "/opt/app/fasttext/supervised.model.bin";
+    FastText model = null;
 
     static public void main(String[] args) {
 
+
 //    String path = args[0];
-        String path = "/opt/app/fasttext/geek-model-v1.bin";
+        String path = "/opt/app/fasttext/supervised.model.bin";
         FastText model = null;
 
         try {
@@ -20,8 +26,8 @@ public class Example {
             long load_model = System.currentTimeMillis() - start ;
             start = System.currentTimeMillis();
 
-            for (int i = 0; i < 100000; i++) {
-                FastTextPrediction prob = model.predict("wo shi ju zi");
+            for (int i = 0; i < 10; i++) {
+                FastTextPrediction prob = model.predict("我 时 张佺佺 张总, 最近 的 招聘 有 什么 新 的 进展 吗");
 
                 System.out.println(prob.label() + prob.probability());
             }
@@ -45,5 +51,36 @@ public class Example {
         }
 
     }
+
+
+
+    @Test
+    public void test() throws IOException {
+
+        long start = System.currentTimeMillis();
+
+        /* First you will have to load your model */
+        model = FastText.loadModel(path);
+
+        long load_model = System.currentTimeMillis() - start ;
+        start = System.currentTimeMillis();
+
+
+        String testFilePath = "/home/zhangquanquan/test.txt" ;
+        FileUtil.readFile(testFilePath, oneLine -> {
+            FastTextPrediction prob = model.predict(oneLine);
+
+            System.out.println(prob.label() + prob.logProbability() + "  " + prob.probability());
+            System.out.println(oneLine);
+        });
+
+        System.out.println("load_model cost:" + load_model);
+        System.out.println("cost:" + (System.currentTimeMillis() - start));
+
+
+    }
+
+
+
 
 }
