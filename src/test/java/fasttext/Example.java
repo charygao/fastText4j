@@ -27,7 +27,7 @@ public class Example {
             start = System.currentTimeMillis();
 
             for (int i = 0; i < 10; i++) {
-                FastTextPrediction prob = model.predict("我 时 张佺佺 张总, 最近 的 招聘 有 什么 新 的 进展 吗");
+                FastTextPrediction prob = model.predict("str");
 
                 System.out.println(prob.label() + prob.probability());
             }
@@ -66,7 +66,7 @@ public class Example {
         start = System.currentTimeMillis();
 
 
-        String testFilePath = "/home/zhangquanquan/test.txt" ;
+        String testFilePath = "/home/test.txt" ;
         FileUtil.readFile(testFilePath, oneLine -> {
             FastTextPrediction prob = model.predict(oneLine);
 
